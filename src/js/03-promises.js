@@ -35,7 +35,7 @@ function onInput(e) {
     count += 1;
 
     if (i === 0) {
-      position = 1;
+      const position = 1;
 
       fullDelay = fullDelay;
       // console.log(fullDelay);
