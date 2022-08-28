@@ -15,45 +15,21 @@ const refs = {
 refs.startBtn.addEventListener('click', onInput);
 
 function onInput(e) {
-  // const formInput = {};
-  // formInput[e.target.name] = e.target.value;
-  // console.log(formInput);
   e.preventDefault();
   let inputValue = {};
   refs.allInput.forEach(element => {
-    // console.log(element.name, Number(element.value));
     inputValue[element.name] = Number(element.value);
-
-    // element.name = element.value;
   });
-  // console.log('Input value', inputValue);
 
   let fullDelay = inputValue.delay;
-  let count = 1;
-  // console.log(fullDelay);
-  for (let i = 0; i < inputValue.amount - 1; i += 1) {
-    count += 1;
 
-    if (i === 0) {
-      const position = 1;
+  let firstStepDelay = 0;
+  console.log(inputValue.step);
+  for (let i = 1; i < inputValue.amount + 1; i += 1) {
+    fullDelay += firstStepDelay;
+    firstStepDelay = inputValue.step;
 
-      fullDelay = fullDelay;
-      // console.log(fullDelay);
-      createPromise(position, fullDelay)
-        .then(({ position, delay }) => {
-          Notiflix.Notify.success(
-            `✅ Fulfilled promise ${position} in ${delay}ms`
-          );
-        })
-        .catch(({ position, delay }) => {
-          Notiflix.Notify.failure(
-            `❌ Rejected promise ${position} in ${delay}ms`
-          );
-        });
-    }
-    fullDelay += inputValue.step;
-    // console.log(fullDelay);
-    createPromise(count, fullDelay)
+    createPromise(i, fullDelay)
       .then(({ position, delay }) => {
         Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
