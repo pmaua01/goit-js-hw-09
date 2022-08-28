@@ -1,6 +1,6 @@
 import Notiflix from 'notiflix';
 
-refs = {
+const refs = {
   amountBtn: document.querySelector('input[name="amount"]'),
   startBtn: document.querySelector('button'),
   form: document.querySelector('.form'),
