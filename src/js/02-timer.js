@@ -11,7 +11,7 @@ const refs = {
   clockSeconds: document.querySelector('[data-seconds]'),
 };
 
-refs.btnStart.disabled = true;
+console.log(refs.flatInput);
 
 const options = {
   enableTime: true,
@@ -24,6 +24,7 @@ const options = {
     const setUserDate = selectedDates[0].getTime();
 
     if (setUserDate < defaultDate) {
+      refs.btnStart.disabled = true;
       Notiflix.Notify.failure('Please choose a date in the future');
       return;
     }
@@ -39,16 +40,28 @@ flatpickr(refs.flatInput, options);
 function setTimer(userTime) {
   refs.btnStart.addEventListener('click', () => {
     timerId = setInterval(() => {
+      refs.flatInput.disabled = true;
+      refs.btnStart.disabled = true;
       const currentTime = Date.now();
       // console.log("current time",currentTime);
-      const deltaTime = userTime - currentTime;
+      let deltaTime = userTime - currentTime;
       console.log('Осталось до дати', deltaTime);
       const { days, hours, minutes, seconds } = convertMs(deltaTime);
+      console.log(userTime - currentTime);
 
       refs.clockDay.textContent = addLeadingZero(days);
       refs.clockHours.textContent = addLeadingZero(hours);
       refs.clockMinutes.textContent = addLeadingZero(minutes);
       refs.clockSeconds.textContent = addLeadingZero(seconds);
+      if (deltaTime < 5) {
+        clearInterval(timerId);
+
+        console.log('zero');
+        refs.clockDay.textContent = '00';
+        refs.clockHours.textContent = '00';
+        refs.clockMinutes.textContent = '00';
+        refs.clockSeconds.textContent = '00';
+      }
     }, 1000);
   });
 }
