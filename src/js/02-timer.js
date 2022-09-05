@@ -2,6 +2,8 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
+let timerId = 0;
+
 const refs = {
   flatInput: document.querySelector('#datetime-picker'),
   btnStart: document.querySelector('[data-start]'),
@@ -36,12 +38,14 @@ const options = {
 };
 
 flatpickr(refs.flatInput, options);
+refs.btnStart.addEventListener('click', () => {
+  refs.flatInput.disabled = true;
+  refs.btnStart.disabled = true;
+});
 
 function setTimer(userTime) {
   refs.btnStart.addEventListener('click', () => {
     timerId = setInterval(() => {
-      refs.flatInput.disabled = true;
-      refs.btnStart.disabled = true;
       const currentTime = Date.now();
       // console.log("current time",currentTime);
       let deltaTime = userTime - currentTime;
@@ -53,7 +57,7 @@ function setTimer(userTime) {
       refs.clockHours.textContent = addLeadingZero(hours);
       refs.clockMinutes.textContent = addLeadingZero(minutes);
       refs.clockSeconds.textContent = addLeadingZero(seconds);
-      if (deltaTime < 5) {
+      if (deltaTime < 0) {
         clearInterval(timerId);
 
         console.log('zero');
